@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "dev server - linux",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "nvm use 18.17.0 && npm run dev"
+    },
+    {
+      "name": "dev server - windows",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "nvm use 18.17.0 ; npm run dev"
+    },
+    {
+      "name": "dev server - gen",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "run test.js code",
+      "command": "npm run dev-test-js"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "Start Server",
+      "command": "npm run start"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "Test Server",
+      "command": "npm run test"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "Lint Server",
+      "command": "npm run lint"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "Lint:Fix Server",
+      "command": "npm run lint:fix"
+    }
+  ]
+}

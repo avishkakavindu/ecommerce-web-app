@@ -12,6 +12,16 @@ import { handleError } from '@utils/errorHandler/errorHandler';
 class ProductController {
   private productService = new ProductService();
 
+  public createProduct = async (req: Request<{}, {}, TCreateProductInput['body']>, res: Response): Promise<void> => {
+    try {
+      const { body } = req;
+      const data = await this.productService.createProduct(body);
+      res.status(200).json(data);
+    } catch (error) {
+      handleError(error as Error, res);
+    }
+  };
+
   public getProductById = async (req: Request<TGetProductInput['params'], {}, {}>, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
@@ -26,16 +36,6 @@ class ProductController {
   public getProductList = async (req: Request, res: Response): Promise<void> => {
     try {
       const data = await this.productService.getProductList();
-      res.status(200).json(data);
-    } catch (error) {
-      handleError(error as Error, res);
-    }
-  };
-
-  public createProduct = async (req: Request<{}, {}, TCreateProductInput['body']>, res: Response): Promise<void> => {
-    try {
-      const { body } = req;
-      const data = await this.productService.createProduct(body);
       res.status(200).json(data);
     } catch (error) {
       handleError(error as Error, res);

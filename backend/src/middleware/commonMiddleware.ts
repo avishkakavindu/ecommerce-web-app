@@ -47,7 +47,7 @@ class CommonMiddleware {
   }
 
   public useCors(): void {
-    this.app.use(cors({ origin: CORS_ORIGIN }));
+    this.app.use(cors({ origin: CORS_ORIGIN, credentials: true }));
   }
 
   public deserializeUser(): void {
