@@ -36,7 +36,7 @@ class CommonMiddleware {
   }
 
   public useURLEncoded(): void {
-    this.app.use(express.urlencoded());
+    this.app.use(express.urlencoded({ extended: true }));
   }
 
   public useHelmet(): void {
