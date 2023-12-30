@@ -1,7 +1,7 @@
-import { AbstractRoute } from '@routes/index';
-import TestRoute from './test/test.route';
+import { IRoute } from '@interfaces/routes.interface';
+import IndexRoute from '@routes/index';
+import UserRoute from './user/user.routes';
 
-export const routes: AbstractRoute[] = [
-  new TestRoute(),
-  // rest of the routes goes in here...
-];
+const v1Routes: IRoute[] = [new IndexRoute(), new UserRoute()];
+
+export default v1Routes;
