@@ -1,12 +1,12 @@
 import express from 'express';
+import { Server, createServer } from 'http';
 
 import { PORT } from 'configs/envValidator';
-import { createServer } from 'http';
 
 class App {
   public app: express.Application;
   public port: string | number;
-  public httpServer: any;
+  public httpServer: Server;
 
   constructor() {
     this.app = express();
