@@ -1,5 +1,5 @@
-import { Application, NextFunction, Request, Response } from 'express';
-import bodyParser from 'body-parser';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import { get } from 'lodash';
 import cors from 'cors';
 import onFinished from 'on-finished';
 import helmet from 'helmet';
@@ -8,6 +8,7 @@ import winston from 'winston';
 import { CORS_ORIGIN } from 'configs/envValidator';
 import Logger from 'utils/logger';
 import { handleRequestComplete, handleRequestStart } from './requests';
+import { verifyJwt } from '@utils/auth/jwt';
 
 class CommonMiddleware {
   public app: Application;
@@ -20,22 +21,20 @@ class CommonMiddleware {
 
   public initializeMiddleware(): void {
     this.useBodyParser();
+    this.useURLEncoded();
     this.useCors();
+    this.deserializeUser();
     this.useHelmet();
-    // this.logRequests();
+    this.logRequests();
     // Add other middleware initialization here
   }
 
   public useBodyParser(): void {
-    this.app.use(bodyParser.json());
+    this.app.use(express.json());
   }
 
   public useURLEncoded(): void {
-    this.app.use(
-      bodyParser.urlencoded({
-        extended: true,
-      }),
-    );
+    this.app.use(express.urlencoded());
   }
 
   public useHelmet(): void {
@@ -44,6 +43,24 @@ class CommonMiddleware {
 
   public useCors(): void {
     this.app.use(cors({ origin: CORS_ORIGIN }));
+  }
+
+  public deserializeUser(): void {
+    this.app.use(async (req: Request, res: Response, next: NextFunction) => {
+      const accessToken = get(req, 'headers.authorization', '').replace(/^Bearer\s/, '');
+
+      if (!accessToken) {
+        return next();
+      }
+
+      const { decoded, expired } = await verifyJwt(accessToken);
+
+      if (decoded) {
+        res.locals.user = decoded;
+        return next();
+      }
+      return next();
+    });
   }
 
   public logRequests(): void {

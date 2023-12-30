@@ -1,7 +1,8 @@
+import jwt from 'jsonwebtoken';
+
 import { IVerifyJwtResult } from '@interfaces/core.interface';
 import { PRIVATE_KEY_PATH, PUBLIC_KEY_PATH } from 'configs/envValidator';
 import readKeyFromFile from 'helpers/readKeysFromFile';
-import jwt from 'jsonwebtoken';
 
 export const signJwt = async (obj: Object, options?: jwt.SignOptions | undefined): Promise<string> => {
   const privateKey = await readKeyFromFile(PRIVATE_KEY_PATH);

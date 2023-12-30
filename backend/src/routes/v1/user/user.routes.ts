@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { IRoute } from '@interfaces/routes.interface';
 import UserController from '@controllers/v1/user/user.controllers';
-import validateResource from '@middleware/validateResource';
+import validateResource from '@middleware/validateResource.middleware';
 import { createUserSchema } from './validations/register.validation';
 
 class UserRoute implements IRoute {

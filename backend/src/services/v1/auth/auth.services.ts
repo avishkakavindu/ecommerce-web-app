@@ -1,3 +1,5 @@
+import { FlattenMaps } from 'mongoose';
+
 import { TSessionDocument } from '@db/interfaces/session.interface';
 import SessionModel from '@db/models/session.model';
 import UserModel from '@db/models/user.model';
@@ -56,6 +58,11 @@ class AuthService {
     );
 
     return { accessToken, refreshToken };
+  }
+
+  public async getSessions(userId: string): Promise<FlattenMaps<TSessionDocument[]>> {
+    const session = SessionModel.find({ user: userId, isValid: true }).lean();
+    return session;
   }
 }
 

@@ -16,6 +16,16 @@ class AuthController {
       handleError(error as Error, res);
     }
   };
+
+  public getSessions = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { user } = res.locals;
+      const data = await this.authService.getSessions(user._id);
+      res.status(200).json(data);
+    } catch (error) {
+      handleError(error as Error, res);
+    }
+  };
 }
 
 export default AuthController;
