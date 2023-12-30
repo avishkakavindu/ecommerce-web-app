@@ -1,8 +1,8 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { get } from 'lodash';
 import cors from 'cors';
-import onFinished from 'on-finished';
 import helmet from 'helmet';
+import onFinished from 'on-finished';
 import winston from 'winston';
 
 import { IRequestUser } from '@interfaces/core.interface';
