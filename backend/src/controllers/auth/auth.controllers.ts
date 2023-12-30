@@ -29,7 +29,7 @@ class AuthController {
 
   public logout = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { user } = res.locals;
+      const { user } = req;
       const data = await this.authService.logout(user._id);
       res.status(200).json(data);
     } catch (error) {
