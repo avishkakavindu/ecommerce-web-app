@@ -26,6 +26,16 @@ class AuthController {
       handleError(error as Error, res);
     }
   };
+
+  public logout = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { user } = res.locals;
+      const data = await this.authService.logout(user._id);
+      res.status(200).json(data);
+    } catch (error) {
+      handleError(error as Error, res);
+    }
+  };
 }
 
 export default AuthController;

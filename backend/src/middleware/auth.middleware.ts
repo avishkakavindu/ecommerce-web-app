@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { get } from 'lodash';
 
-import { verifyJwt } from '@utils/auth/jwt';
 import HttpException from 'exceptions/httpException';
 import { RESPONSES } from 'constants/responses';
 import { handleError } from '@utils/errorHandler/errorHandler';
 
-const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
+const requireAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const user = res.locals.user;
 
   if (!user) {
@@ -16,6 +14,7 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
       userMessage: 'User not authenticated',
     });
     handleError(error, res);
+    return;
   }
 
   return next();

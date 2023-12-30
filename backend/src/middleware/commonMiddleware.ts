@@ -9,6 +9,7 @@ import { CORS_ORIGIN } from 'configs/envValidator';
 import Logger from 'utils/logger';
 import { handleRequestComplete, handleRequestStart } from './requests';
 import { verifyJwt } from '@utils/auth/jwt';
+import AuthService from '@services/v1/auth/auth.services';
 
 class CommonMiddleware {
   public app: Application;
@@ -48,6 +49,7 @@ class CommonMiddleware {
   public deserializeUser(): void {
     this.app.use(async (req: Request, res: Response, next: NextFunction) => {
       const accessToken = get(req, 'headers.authorization', '').replace(/^Bearer\s/, '');
+      const refreshToken = get(req, 'headers.x-refresh') as string;
 
       if (!accessToken) {
         return next();
@@ -59,6 +61,20 @@ class CommonMiddleware {
         res.locals.user = decoded;
         return next();
       }
+
+      if (expired && refreshToken) {
+        const authServices = new AuthService();
+        const newAccessToken = await authServices.reIssueAccessToken(refreshToken);
+
+        if (newAccessToken) {
+          res.setHeader('x-access-token', newAccessToken as string);
+        }
+
+        const result = await verifyJwt(newAccessToken as string);
+        res.locals.user = result.decoded;
+        return next();
+      }
+
       return next();
     });
   }

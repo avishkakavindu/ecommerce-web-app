@@ -18,6 +18,7 @@ class AuthRoute implements IRoute {
   private initializeRoutes(): void {
     this.router.post(`${this.path}/login`, validateResource(loginSchema), this.authController.login);
     this.router.get(`${this.path}/sessions`, requireAuth, this.authController.getSessions);
+    this.router.get(`${this.path}/logout`, requireAuth, this.authController.logout);
   }
 }
 

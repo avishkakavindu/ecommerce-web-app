@@ -2,7 +2,7 @@ import { TUserDocument } from './user.interface';
 
 export interface ISession {
   user: TUserDocument['_id'];
-  valid: boolean;
+  isValid: boolean;
   userAgent: string;
   createdAt: Date;
   updatedAt: Date;

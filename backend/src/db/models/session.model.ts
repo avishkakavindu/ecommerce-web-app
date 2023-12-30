@@ -1,5 +1,5 @@
 import { Schema, model, Types } from 'mongoose';
-import { ISession, TSessionDocument } from '@db/interfaces/session.interface';
+import { TSessionDocument } from '@db/interfaces/session.interface';
 
 const sessionSchema = new Schema(
   {

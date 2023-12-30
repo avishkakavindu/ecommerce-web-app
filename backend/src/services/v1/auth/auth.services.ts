@@ -1,9 +1,10 @@
 import { FlattenMaps } from 'mongoose';
+import { get } from 'lodash';
 
 import { TSessionDocument } from '@db/interfaces/session.interface';
 import SessionModel from '@db/models/session.model';
 import UserModel from '@db/models/user.model';
-import { signJwt } from '@utils/auth/jwt';
+import { signJwt, verifyJwt } from '@utils/auth/jwt';
 import { JWT_EXPIRY, REFRESH_EXPIRY } from 'configs/envValidator';
 import { RESPONSES } from 'constants/responses';
 import HttpException from 'exceptions/httpException';
@@ -39,10 +40,17 @@ class AuthService {
     // create session
     const session = await SessionModel.create({ user: existingUser._id, userAgent });
 
+    const jwtPayload = {
+      _id: existingUser._id,
+      firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
+      email: existingUser.email,
+    };
+
     // generate access token
     const accessToken = await signJwt(
       {
-        ...existingUser, // or pass selected properties
+        ...jwtPayload,
         session: session._id,
       },
       { expiresIn: JWT_EXPIRY },
@@ -51,7 +59,7 @@ class AuthService {
     // generate refresh token
     const refreshToken = await signJwt(
       {
-        ...existingUser, // or pass selected properties
+        ...jwtPayload,
         session: session._id,
       },
       { expiresIn: REFRESH_EXPIRY },
@@ -61,8 +69,51 @@ class AuthService {
   }
 
   public async getSessions(userId: string): Promise<FlattenMaps<TSessionDocument[]>> {
-    const session = SessionModel.find({ user: userId, isValid: true }).lean();
+    const session = await SessionModel.find({ user: userId, isValid: true }).lean();
     return session;
+  }
+
+  public async logout(userId: string): Promise<{ accessToken: null; refreshToken: null }> {
+    await SessionModel.findOneAndDelete({ user: userId }).lean();
+    return { accessToken: null, refreshToken: null };
+  }
+
+  public async reIssueAccessToken(refreshToken: string): Promise<string | boolean> {
+    const { decoded } = await verifyJwt(refreshToken);
+
+    if (!decoded || !get(decoded, '_id')) {
+      return false;
+    }
+
+    const session = await SessionModel.findOne({ user: get(decoded, '_id') }).lean();
+
+    if (!session || !session.isValid) {
+      return false;
+    }
+
+    const user = await UserModel.findById(session.user).lean();
+
+    if (!user) {
+      return false;
+    }
+
+    const jwtPayload = {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
+
+    // generate access token
+    const accessToken = await signJwt(
+      {
+        ...jwtPayload,
+        session: session._id,
+      },
+      { expiresIn: JWT_EXPIRY },
+    );
+
+    return accessToken;
   }
 }
 

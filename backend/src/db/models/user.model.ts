@@ -1,6 +1,6 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { IUser } from '@db/interfaces/user.interface';
+import { IUser, TUserDocument } from '@db/interfaces/user.interface';
 import { SALT_WORK_FACTOR } from 'configs/envValidator';
 
 const userSchema = new Schema(
@@ -44,6 +44,13 @@ userSchema.methods.comparePassword = async function (candidatePassword: string):
   return bcrypt.compare(candidatePassword, this.password).catch(_e => false);
 };
 
-const UserModel = model<IUser & Document>('User', userSchema);
+userSchema.methods.toJSON = function (): Omit<IUser, 'password'> {
+  const obj = this.toObject();
+  delete obj.password;
+  delete obj.__v;
+  return obj;
+};
+
+const UserModel = model<TUserDocument>('User', userSchema);
 
 export default UserModel;
