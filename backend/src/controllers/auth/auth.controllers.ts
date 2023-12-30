@@ -19,7 +19,7 @@ class AuthController {
 
   public getSessions = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { user } = res.locals;
+      const { user } = req;
       const data = await this.authService.getSessions(user._id);
       res.status(200).json(data);
     } catch (error) {

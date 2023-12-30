@@ -5,6 +5,7 @@ import onFinished from 'on-finished';
 import helmet from 'helmet';
 import winston from 'winston';
 
+import { IRequestUser } from '@interfaces/core.interface';
 import { CORS_ORIGIN } from 'configs/envValidator';
 import Logger from 'utils/logger';
 import { handleRequestComplete, handleRequestStart } from './requests';
@@ -47,7 +48,7 @@ class CommonMiddleware {
   }
 
   public deserializeUser(): void {
-    this.app.use(async (req: Request, res: Response, next: NextFunction) => {
+    this.app.use(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       const accessToken = get(req, 'headers.authorization', '').replace(/^Bearer\s/, '');
       const refreshToken = get(req, 'headers.x-refresh') as string;
 
@@ -58,7 +59,7 @@ class CommonMiddleware {
       const { decoded, expired } = await verifyJwt(accessToken);
 
       if (decoded) {
-        res.locals.user = decoded;
+        req.user = decoded as IRequestUser;
         return next();
       }
 
@@ -71,7 +72,7 @@ class CommonMiddleware {
         }
 
         const result = await verifyJwt(newAccessToken as string);
-        res.locals.user = result.decoded;
+        req.user = result.decoded as IRequestUser;
         return next();
       }
 

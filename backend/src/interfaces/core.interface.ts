@@ -1,4 +1,5 @@
-import jwt from 'jsonwebtoken';
+import { Request } from 'express';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export interface IEnvVariables {
   NODE_ENV: string;
@@ -22,4 +23,11 @@ export interface IVerifyJwtResult {
   valid: boolean;
   expired: boolean;
   decoded: string | jwt.JwtPayload;
+}
+
+export interface IRequestUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
