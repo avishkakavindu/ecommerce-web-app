@@ -11,6 +11,8 @@ import Logger from 'utils/logger';
 import { handleRequestComplete, handleRequestStart } from './requests';
 import { verifyJwt } from '@utils/auth/jwt';
 import AuthService from '@services/v1/auth/auth.services';
+import requireAuth from './auth.middleware';
+import path from 'path';
 
 class CommonMiddleware {
   public app: Application;
@@ -28,6 +30,7 @@ class CommonMiddleware {
     this.deserializeUser();
     this.useHelmet();
     this.logRequests();
+    this.useStaticFiles();
     // Add other middleware initialization here
   }
 
@@ -78,6 +81,13 @@ class CommonMiddleware {
 
       return next();
     });
+  }
+
+  /**
+   * Provide controlled access to media folder
+   */
+  public useStaticFiles(): void {
+    this.app.use('/media', express.static(path.resolve(__dirname, '../../media', requireAuth)));
   }
 
   public logRequests(): void {

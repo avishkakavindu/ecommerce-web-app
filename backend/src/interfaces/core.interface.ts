@@ -1,5 +1,4 @@
-import { Request } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export interface IEnvVariables {
   NODE_ENV: string;
@@ -13,10 +12,11 @@ export interface IEnvVariables {
   LOG_FILE_NAME_PATTERN: string;
   LOG_MAX_FILES: number;
   SALT_WORK_FACTOR: number;
-  JWT_EXPIRY: string; // TODO introduce types
-  REFRESH_EXPIRY: string; // TODO introduce types
+  JWT_EXPIRY: string;
+  REFRESH_EXPIRY: string;
   PUBLIC_KEY_PATH: string;
   PRIVATE_KEY_PATH: string;
+  MEDIA_DIR: string;
 }
 
 export interface IVerifyJwtResult {

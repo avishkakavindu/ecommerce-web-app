@@ -17,8 +17,9 @@ export const {
   SALT_WORK_FACTOR = 10,
   JWT_EXPIRY = '15m',
   REFRESH_EXPIRY = '1y',
-  PUBLIC_KEY_PATH = './keys/public-key.pem',
-  PRIVATE_KEY_PATH = './keys/private-key.pem',
+  PUBLIC_KEY_PATH = 'keys/public-key.pem',
+  PRIVATE_KEY_PATH = 'keys/private-key.pem',
+  MEDIA_DIR = 'media/',
 
   // Add more variables here...
 } = process.env as unknown as IEnvVariables;
