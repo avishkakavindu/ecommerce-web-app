@@ -24,6 +24,12 @@ const productSchema = new Schema(
       type: Types.ObjectId,
       ref: 'Attachment',
     },
+    images: [
+      {
+        type: Types.ObjectId,
+        ref: 'Attachment',
+      },
+    ],
   },
   {
     timestamps: true,

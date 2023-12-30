@@ -4,6 +4,7 @@ export interface IProduct {
   description: string;
   quantity: number;
   mainImage: string;
+  images: string[];
   createdAt: Date;
   updatedAt: Date;
 }

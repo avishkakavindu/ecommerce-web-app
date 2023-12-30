@@ -1,19 +1,20 @@
 import { Types } from 'mongoose';
-import { object, string, TypeOf } from 'zod';
+import { object, string, TypeOf, array } from 'zod';
 
 const body = {
   body: object({
     sku: string({ required_error: 'SKU is required' }),
     name: string({ required_error: 'Name is required' }),
-    description: string({ required_error: 'Description is required' }).email('Invalid email'),
-    quantity: string({ required_error: 'Quantity is required' }).min(6, 'Password too short - should be 6 characters minimum'),
+    description: string({ required_error: 'Description is required' }),
+    quantity: string({ required_error: 'Quantity is required' }),
     mainImage: string({ required_error: 'Select thumbnail' }),
+    images: array(string()),
   }),
 };
 
 const params = {
   params: object({
-    id: string().refine(val => {
+    id: string().refine((val: string) => {
       return Types.ObjectId.isValid(val);
     }, 'Invalid product id'),
   }),
@@ -21,7 +22,6 @@ const params = {
 
 export const createProductSchema = object({
   ...body,
-  ...params,
 });
 
 export const updateProductSchema = object({
