@@ -1,9 +1,9 @@
-import { Express } from 'express';
+import { Application } from 'express';
 
 import { routes } from '@routes/v1';
 
 class InitializeRoutes {
-  public static async Initialize(app: Express): Promise<void> {
+  public static async initialize(app: Application): Promise<void> {
     routes.forEach(route => {
       app.use('/', route.router);
     });

@@ -1,7 +1,9 @@
 import express from 'express';
 import { Server, createServer } from 'http';
 
-import { PORT } from 'configs/envValidator';
+import loadEnvVariables, { PORT } from 'configs/envValidator';
+import InitializeRoutes from './initializeRoutes';
+import InitializeMiddleware from './initializeMiddleware';
 
 class App {
   public app: express.Application;
@@ -13,6 +15,14 @@ class App {
     this.port = PORT || 4000;
     this.httpServer = createServer(this.app);
     this.app.set('port', this.port);
+
+    this.initializeFunctions();
+  }
+
+  private async initializeFunctions(): Promise<void> {
+    loadEnvVariables();
+    await InitializeMiddleware.initializeCommonMiddleware(this.app);
+    await InitializeRoutes.initialize(this.app);
   }
 
   public listen(): void {

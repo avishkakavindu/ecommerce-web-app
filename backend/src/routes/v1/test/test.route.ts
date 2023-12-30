@@ -9,7 +9,7 @@ class TestRoute extends AbstractRoute {
   }
 
   public async handleGet(req: Request, res: Response): Promise<void> {
-    res.status(200);
+    res.status(200).send({ status: 'OK' });
   }
 }
 
