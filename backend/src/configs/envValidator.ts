@@ -14,6 +14,12 @@ export const {
   LOG_DATE_PATTERN = 'YYYY-MM-DD-HH',
   LOG_FILE_NAME_PATTERN = `%DATE%.log`,
   LOG_MAX_FILES = 14,
+  SALT_WORK_FACTOR = 10,
+  JWT_EXPIRY = '15m',
+  REFRESH_EXPIRY = '1y',
+  PUBLIC_KEY = '',
+  PRIVATE_KEY = '',
+
   // Add more variables here...
 } = process.env as unknown as IEnvVariables;
 
@@ -26,7 +32,15 @@ function loadEnvVariables(): void {
   config();
 
   // Check required environment variables
-  const requiredEnvVariables: Array<keyof IEnvVariables> = ['NODE_ENV', 'PORT', 'HOST', 'DB_URI', 'DB_DATABASE'];
+  const requiredEnvVariables: Array<keyof IEnvVariables> = [
+    'NODE_ENV',
+    'PORT',
+    'HOST',
+    'DB_URI',
+    'DB_DATABASE',
+    'PUBLIC_KEY',
+    'PRIVATE_KEY',
+  ];
 
   for (const variable of requiredEnvVariables) {
     const x = process.env[variable];
