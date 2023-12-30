@@ -1,1 +1,4 @@
-console.log('hello world');
+import App from 'core/app';
+
+const app = new App();
+app.listen();
