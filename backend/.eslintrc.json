@@ -22,7 +22,7 @@
     "no-throw-literal": "error",
     "object-shorthand": "warn",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
     "prettier/prettier": ["error", { "singleQuote": true }]
   }
 }

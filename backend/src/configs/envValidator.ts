@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
-
 import { IEnvVariables } from '@interfaces/core.interface';
+
+config({ path: `.env` });
 
 export const {
   NODE_ENV = 'dev',
@@ -28,6 +29,7 @@ function loadEnvVariables(): void {
   const requiredEnvVariables: Array<keyof IEnvVariables> = ['NODE_ENV', 'PORT', 'HOST', 'DB_URI', 'DB_DATABASE'];
 
   for (const variable of requiredEnvVariables) {
+    const x = process.env[variable];
     if (!process.env[variable] || process.env[variable]!.trim() === '') {
       throw new Error(`Required environment variable ${variable} is missing or empty.`);
     }

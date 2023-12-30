@@ -3,6 +3,7 @@ import { Server, createServer } from 'http';
 import winston from 'winston';
 
 import loadEnvVariables, { PORT } from 'configs/envValidator';
+import DatabaseConnection from 'configs/dbConnection';
 import Logger from 'utils/logger';
 import InitializeRoutes from './initializeRoutes';
 import InitializeMiddleware from './initializeMiddleware';
@@ -11,6 +12,7 @@ class App {
   public app: express.Application;
   public port: string | number;
   public httpServer: Server;
+  public dbConnection: DatabaseConnection;
   public logger: winston.Logger;
 
   constructor() {
@@ -18,6 +20,7 @@ class App {
     this.port = PORT || 4000;
     this.httpServer = createServer(this.app);
     this.app.set('port', this.port);
+    this.dbConnection = new DatabaseConnection();
 
     this.initializeFunctions();
     this.logger = Logger.getLogger();
@@ -25,9 +28,20 @@ class App {
 
   private async initializeFunctions(): Promise<void> {
     loadEnvVariables();
+    await this.dbConnection.connect();
+
     await InitializeMiddleware.initializeCommonMiddleware(this.app);
     // initialize routes
     await InitializeRoutes.initialize(this.app);
+  }
+
+  public async disconnect(): Promise<void> {
+    try {
+      await this.dbConnection.disconnect();
+      this.logger.info('Database disconnected.');
+    } catch (error) {
+      this.logger.error(`Error disconnecting from the database: ${error}`);
+    }
   }
 
   public listen(): void {
