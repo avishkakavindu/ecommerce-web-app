@@ -2,6 +2,7 @@ import { Application, NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
+import winston from 'winston';
 
 import { CORS_ORIGIN } from 'configs/envValidator';
 import Logger from 'utils/logger';
@@ -9,9 +10,11 @@ import { handleRequestComplete, handleRequestStart } from './requests';
 
 class CommonMiddleware {
   public app: Application;
+  public logger: winston.Logger;
 
   constructor(_app: Application) {
     this.app = _app;
+    this.logger = Logger.getLogger();
   }
 
   public async initializeMiddleware(): Promise<void> {
@@ -43,15 +46,13 @@ class CommonMiddleware {
   }
 
   public async logRequests(): Promise<void> {
-    const logger = Logger.getLogger();
-
     this.app.use(async (req: Request, res: Response, next: NextFunction) => {
-      handleRequestStart(req, logger);
+      handleRequestStart(req, this.logger);
       next();
     });
 
     this.app.use((req: Request, res: Response, next: NextFunction) => {
-      handleRequestComplete(req, res, logger);
+      handleRequestComplete(req, res, this.logger);
       next();
     });
   }
