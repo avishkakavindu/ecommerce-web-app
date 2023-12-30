@@ -38,7 +38,7 @@ class AuthService {
     const session = await SessionModel.create({ user: existingUser._id, userAgent });
 
     // generate access token
-    const accessToken = signJwt(
+    const accessToken = await signJwt(
       {
         ...existingUser, // or pass selected properties
         session: session._id,
@@ -47,7 +47,7 @@ class AuthService {
     );
 
     // generate refresh token
-    const refreshToken = signJwt(
+    const refreshToken = await signJwt(
       {
         ...existingUser, // or pass selected properties
         session: session._id,

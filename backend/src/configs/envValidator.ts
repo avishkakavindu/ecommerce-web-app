@@ -17,8 +17,8 @@ export const {
   SALT_WORK_FACTOR = 10,
   JWT_EXPIRY = '15m',
   REFRESH_EXPIRY = '1y',
-  PUBLIC_KEY = '',
-  PRIVATE_KEY = '',
+  PUBLIC_KEY_PATH = './keys/public-key.pem',
+  PRIVATE_KEY_PATH = './keys/private-key.pem',
 
   // Add more variables here...
 } = process.env as unknown as IEnvVariables;
@@ -38,8 +38,8 @@ function loadEnvVariables(): void {
     'HOST',
     'DB_URI',
     'DB_DATABASE',
-    'PUBLIC_KEY',
-    'PRIVATE_KEY',
+    'PUBLIC_KEY_PATH',
+    'PRIVATE_KEY_PATH',
   ];
 
   for (const variable of requiredEnvVariables) {
