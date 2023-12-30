@@ -12,7 +12,7 @@ export default class HttpException extends CustomError {
     message?: string;
     userMessage?: string;
     logging?: boolean;
-    context?: { [key: string]: any };
+    context?: TContextObject | TContextObject[];
   }) {
     const { code, message, logging } = params || {};
 
