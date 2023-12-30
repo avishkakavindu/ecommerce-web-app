@@ -1,0 +1,7 @@
+@import './pages/dashboard.scss';
+
+.error {
+  @apply text-red-500 text-xs italic;
+
+  word-wrap: 'break-word';
+}
