@@ -1,7 +1,5 @@
 .dashboard {
-  border: 1px solid red;
-
-  .header {
+  .title {
     @apply font-satoshi;
 
     font-size: 36px;
@@ -9,5 +7,27 @@
     line-height: 49px;
     letter-spacing: 0.15em;
     text-align: left;
+  }
+
+  .header {
+    margin-top: 32px;
+
+    .search-bar {
+      .search-bar__container {
+        input {
+          border-radius: 50px;
+          background: var(--f-7-f-7-f-7, #f7f7f7);
+        }
+
+        .btn {
+          @apply font-satoshi;
+
+          color: var(--ffffff, #fff);
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+        }
+      }
+    }
   }
 }

@@ -15,7 +15,7 @@ function App() {
       <Router>
         <div className='main'>
           <Header />
-          <div className='container px-6 md:px-[100px]'>
+          <div className='px-6 md:px-[100px]'>
             <Routes>
               {/* public routes */}
               <Route path='/login' element={<Login />} />

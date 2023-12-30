@@ -1,0 +1,10 @@
+.custom-table {
+  th {
+    @apply text-primary;
+  }
+
+  img {
+    width: 66px;
+    height: 66px;
+  }
+}

@@ -1,4 +1,8 @@
+// pages
 @import './pages/dashboard.scss';
+
+// components
+@import './components/customTable.scss';
 
 .error {
   @apply text-red-500 text-xs italic;
