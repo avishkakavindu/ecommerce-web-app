@@ -109,10 +109,11 @@
     "paths": {
       "@db/*": ["db/*"],
       "@interfaces/*": ["interfaces/*"],
-      "@middlewares/*": ["middlewares/*"],
+      "@middleware/*": ["middleware/*"],
       "@routes/*": ["routes/*"],
       "@controllers/*": ["controllers/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@utils/*": ["utils/*"]
     }
   }
 }
