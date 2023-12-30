@@ -1,6 +1,8 @@
+import IndexRoute from '@routes/index';
+import v1Routes from '@routes/v1';
 import { Application } from 'express';
 
-import { routes } from '@routes/v1';
+const routes = [new IndexRoute(), ...v1Routes];
 
 class InitializeRoutes {
   public static async initialize(app: Application): Promise<void> {

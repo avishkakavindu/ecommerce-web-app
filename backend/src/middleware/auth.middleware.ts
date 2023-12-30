@@ -5,7 +5,7 @@ import { RESPONSES } from 'constants/responses';
 import { handleError } from '@utils/errorHandler/errorHandler';
 
 const requireAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const user = res.locals.user;
+  const { user } = req;
 
   if (!user) {
     const error = new HttpException({
