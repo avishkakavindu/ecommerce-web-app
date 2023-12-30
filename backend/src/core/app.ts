@@ -26,6 +26,7 @@ class App {
   private async initializeFunctions(): Promise<void> {
     loadEnvVariables();
     await InitializeMiddleware.initializeCommonMiddleware(this.app);
+    // initialize routes
     await InitializeRoutes.initialize(this.app);
   }
 

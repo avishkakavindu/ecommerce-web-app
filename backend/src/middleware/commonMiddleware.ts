@@ -1,6 +1,7 @@
 import { Application, NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import onFinished from 'on-finished';
 import helmet from 'helmet';
 import winston from 'winston';
 
@@ -46,14 +47,13 @@ class CommonMiddleware {
   }
 
   public async logRequests(): Promise<void> {
-    this.app.use(async (req: Request, res: Response, next: NextFunction) => {
+    this.app.use('/*', async (req: Request, res: Response, next: NextFunction) => {
       handleRequestStart(req, this.logger);
       next();
-    });
 
-    this.app.use((req: Request, res: Response, next: NextFunction) => {
-      handleRequestComplete(req, res, this.logger);
-      next();
+      onFinished(res, _err => {
+        handleRequestComplete(req, res, this.logger);
+      });
     });
   }
 }
