@@ -3,22 +3,14 @@ import { CustomError, TContextObject } from './CustomError';
 export default class HttpException extends CustomError {
   private static readonly _statusCode = 400;
   private readonly _code: number;
-  private readonly _logging: boolean;
   private readonly _userMessage: string;
   private readonly _context: TContextObject | TContextObject[];
 
-  constructor(params?: {
-    code?: number;
-    message?: string;
-    userMessage?: string;
-    logging?: boolean;
-    context?: TContextObject | TContextObject[];
-  }) {
-    const { code, message, logging } = params || {};
+  constructor(params?: { code?: number; message?: string; userMessage?: string; context?: TContextObject | TContextObject[] }) {
+    const { code, message } = params || {};
 
     super(message || 'Bad request');
     this._code = code || HttpException._statusCode;
-    this._logging = logging || false;
     this._context = params?.context || {};
     this._userMessage = params?.userMessage || '';
 
@@ -37,9 +29,5 @@ export default class HttpException extends CustomError {
 
   get statusCode(): number {
     return this._code;
-  }
-
-  get logging(): boolean {
-    return this._logging;
   }
 }

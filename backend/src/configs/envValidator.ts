@@ -43,7 +43,6 @@ function loadEnvVariables(): void {
   ];
 
   for (const variable of requiredEnvVariables) {
-    const x = process.env[variable];
     if (!process.env[variable] || process.env[variable]!.trim() === '') {
       throw new Error(`Required environment variable ${variable} is missing or empty.`);
     }

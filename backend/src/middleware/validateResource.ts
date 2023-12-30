@@ -1,3 +1,5 @@
+import { handleError } from '@utils/errorHandler/errorHandler';
+import HttpException from 'exceptions/httpException';
 import { NextFunction, Request, Response } from 'express';
 import { AnyZodObject, ZodError } from 'zod';
 
@@ -23,7 +25,12 @@ const validateResource =
       next();
     } catch (errors: unknown) {
       const errs = errors as ZodError;
-      res.status(400).json(errs.issues);
+      const exception = new HttpException({
+        code: 422,
+        message: 'VALIDATION_ERROR',
+        context: errs.issues,
+      });
+      handleError(exception, res);
     }
   };
 
