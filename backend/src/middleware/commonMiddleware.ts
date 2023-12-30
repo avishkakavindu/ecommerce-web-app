@@ -87,7 +87,7 @@ class CommonMiddleware {
    * Provide controlled access to media folder
    */
   public useStaticFiles(): void {
-    this.app.use('/media', express.static(path.resolve(__dirname, '../../media', requireAuth)));
+    this.app.use('/media', express.static(path.resolve(__dirname, '../../media')), requireAuth);
   }
 
   public logRequests(): void {
