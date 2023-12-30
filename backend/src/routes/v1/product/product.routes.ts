@@ -21,19 +21,20 @@ class ProductRoute implements IRoute {
   }
 
   private initializeRoutes(): void {
+    // create product
     this.router.post(`${this.path}`, requireAuth, validateResource(createProductSchema), this.productController.createProduct);
-
+    // get product list
     this.router.get(`${this.path}/list`, requireAuth, this.productController.getProductList);
-
+    // get product by id
     this.router.get(`${this.path}/:id`, requireAuth, validateResource(getProductSchema), this.productController.getProductById);
-
+    // update product by id
     this.router.patch(
       `${this.path}/:id`,
       requireAuth,
       validateResource(updateProductSchema),
       this.productController.updateProduct,
     );
-
+    // delete product by id
     this.router.delete(
       `${this.path}/:id`,
       requireAuth,

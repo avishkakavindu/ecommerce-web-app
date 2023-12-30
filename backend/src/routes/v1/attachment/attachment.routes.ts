@@ -17,8 +17,9 @@ class AttachmentRoute implements IRoute {
   }
 
   private initializeRoutes(): void {
+    // upload single image
     this.router.post(`${this.path}`, requireAuth, upload.single('image'), this.attachmentController.createAttachment);
-
+    // get image by id
     this.router.get(
       `${this.path}/:id`,
       requireAuth,

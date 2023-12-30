@@ -8,6 +8,11 @@ import { RESPONSES } from 'constants/responses';
 class AttachmentController {
   private attachmentService = new AttachmentService();
 
+  /**
+   * Create attachment
+   * @param req - Request
+   * @param res - Response
+   */
   public createAttachment = async (req: Request, res: Response): Promise<void> => {
     try {
       const { originalname, destination, filename, mimetype, size } = req.file as Express.Multer.File;
@@ -28,6 +33,11 @@ class AttachmentController {
     }
   };
 
+  /**
+   * Get attachment
+   * @param req - Request
+   * @param res - Response
+   */
   public getAttachment = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;

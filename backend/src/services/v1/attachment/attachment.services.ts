@@ -6,6 +6,11 @@ import HttpException from 'exceptions/httpException';
 import { RESPONSES } from 'constants/responses';
 
 class AttachmentService {
+  /**
+   * Create attachment
+   * @param { location: string; originalName: string; mimetype: string;} attachment - attachment payload
+   * @returns
+   */
   public async createAttachment(attachment: {
     location: string;
     originalName: string;
@@ -15,6 +20,11 @@ class AttachmentService {
     return savedAttachment;
   }
 
+  /**
+   * Get attachment by id
+   * @param {string} id - attachment id
+   * @returns
+   */
   public async getAttachment(id: string): Promise<FlattenMaps<TAttachmentDocument>> {
     const attachment = await AttachmentModel.findById(id).lean();
     if (!attachment) {

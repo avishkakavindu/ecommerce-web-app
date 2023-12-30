@@ -6,6 +6,11 @@ import HttpException from 'exceptions/httpException';
 import { FlattenMaps } from 'mongoose';
 
 class ProductService {
+  /**
+   * Get product by Id
+   * @param {string} id - Product Id
+   * @returns
+   */
   public async getProductById(id: string): Promise<FlattenMaps<TProductDocument>> {
     const data = await ProductModel.findById(id).lean();
 
@@ -19,13 +24,21 @@ class ProductService {
 
     return data;
   }
-
-  // !TODO Add pagination
+  /**
+   * Get product list
+   * TODO Add pagination
+   * @returns
+   */
   public async getProductList(): Promise<FlattenMaps<TProductDocument[]>> {
     const data = await ProductModel.find({}).lean();
     return data;
   }
 
+  /**
+   * Create product
+   * @param { TCreateProductInput['body']} body - Product details
+   * @returns
+   */
   public async createProduct(body: TCreateProductInput['body']): Promise<TProductDocument> {
     try {
       const data = await ProductModel.create(body);
@@ -43,7 +56,13 @@ class ProductService {
     }
   }
 
-  // ! TODO unique key constrain failure need to be handled
+  /**
+   * Update product by id
+   * TODO unique key constrain failure need to be handled
+   * @param {string} id - product id
+   * @param {TUpdateProductInput['body']} body - Update product payload
+   * @returns
+   */
   public async updateProduct(id: string, body: TUpdateProductInput['body']): Promise<FlattenMaps<TProductDocument>> {
     const data = await ProductModel.findByIdAndUpdate(id, body, { new: true }).lean();
 
@@ -53,6 +72,11 @@ class ProductService {
     return data;
   }
 
+  /**
+   * Delete product by id
+   * @param {string} id - Product id
+   * @returns
+   */
   public async deleteProduct(id: string): Promise<FlattenMaps<TProductDocument>> {
     const data = await ProductModel.findByIdAndDelete(id).lean();
 

@@ -78,21 +78,26 @@ class AuthService {
     return { accessToken: null, refreshToken: null };
   }
 
+  /**
+   * Re-Issue access token using refresh token
+   * @param {string} refreshToken - refresh token
+   * @returns
+   */
   public async reIssueAccessToken(refreshToken: string): Promise<string | boolean> {
     const { decoded } = await verifyJwt(refreshToken);
-
+    // verify access token
     if (!decoded || !get(decoded, '_id')) {
       return false;
     }
 
     const session = await SessionModel.findOne({ user: get(decoded, '_id') }).lean();
-
+    // check if active session is present
     if (!session || !session.isValid) {
       return false;
     }
 
     const user = await UserModel.findById(session.user).lean();
-
+    // check user existence
     if (!user) {
       return false;
     }
