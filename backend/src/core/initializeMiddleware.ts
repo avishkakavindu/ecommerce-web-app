@@ -5,7 +5,7 @@ class InitializeMiddleware {
   public static async initializeCommonMiddleware(app: Application): Promise<void> {
     const middleware = new CommonMiddleware(app);
 
-    await middleware.initializeMiddleware();
+    middleware.initializeMiddleware();
   }
 }
 

@@ -18,19 +18,19 @@ class CommonMiddleware {
     this.logger = Logger.getLogger();
   }
 
-  public async initializeMiddleware(): Promise<void> {
-    await this.useBodyParser();
-    await this.useCors();
-    await this.useHelmet();
-    await this.logRequests();
+  public initializeMiddleware(): void {
+    this.useBodyParser();
+    this.useCors();
+    this.useHelmet();
+    // this.logRequests();
     // Add other middleware initialization here
   }
 
-  public async useBodyParser(): Promise<void> {
+  public useBodyParser(): void {
     this.app.use(bodyParser.json());
   }
 
-  public async useURLEncoded(): Promise<void> {
+  public useURLEncoded(): void {
     this.app.use(
       bodyParser.urlencoded({
         extended: true,
@@ -38,15 +38,15 @@ class CommonMiddleware {
     );
   }
 
-  public async useHelmet(): Promise<void> {
+  public useHelmet(): void {
     this.app.use(helmet());
   }
 
-  public async useCors(): Promise<void> {
+  public useCors(): void {
     this.app.use(cors({ origin: CORS_ORIGIN }));
   }
 
-  public async logRequests(): Promise<void> {
+  public logRequests(): void {
     this.app.use('/*', async (req: Request, res: Response, next: NextFunction) => {
       handleRequestStart(req, this.logger);
       next();

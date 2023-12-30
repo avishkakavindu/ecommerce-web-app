@@ -30,9 +30,9 @@ class App {
     loadEnvVariables();
     await this.dbConnection.connect();
 
-    await InitializeMiddleware.initializeCommonMiddleware(this.app);
+    InitializeMiddleware.initializeCommonMiddleware(this.app);
     // initialize routes
-    await InitializeRoutes.initialize(this.app);
+    InitializeRoutes.initialize(this.app);
   }
 
   public async disconnect(): Promise<void> {

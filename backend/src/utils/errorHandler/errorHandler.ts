@@ -13,11 +13,11 @@ export const handleError = (err: Error, res: Response): void => {
   // Handled errors
   if (err instanceof CustomError) {
     const { statusCode, errors } = err;
-    res.sendStatus(statusCode).json({ errors });
+    res.status(statusCode).json({ errors });
     return;
   }
 
   // Unhandled errors
-  res.sendStatus(500).json({ errors: [{ message: 'Something went wrong' }] });
+  res.status(500).json({ errors: [{ message: 'Something went wrong' }] });
   return;
 };
