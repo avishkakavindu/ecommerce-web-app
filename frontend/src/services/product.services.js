@@ -50,3 +50,32 @@ export const fetchProductById = async (
     }
   }
 };
+
+export const deleteProductById = async (
+  productId,
+  accessToken,
+  refreshToken
+) => {
+  try {
+    const response = await axios.delete(`/products/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'x-refresh': refreshToken,
+      },
+    });
+
+    // Handle the response status code to determine success/failure
+    if (response.status === 200) {
+      toast.success('Product deleted successfully');
+      return true;
+    } else {
+      toast.error('Failed to delete product');
+      return false; // Indicate failure
+    }
+  } catch (error) {
+    // Handle errors
+    console.error('Error:', error);
+    toast.error('Something went wrong while deleting');
+    return false; // Indicate failure
+  }
+};

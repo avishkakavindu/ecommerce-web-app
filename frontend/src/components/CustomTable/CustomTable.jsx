@@ -4,8 +4,9 @@ import propTypes from 'prop-types';
 
 import { DeleteIcon, EditIcon, SearchIcon, StarIcon } from '../icons';
 import { fetchImage } from '../../services/attachment.services';
+import Modal from '../Modal';
 
-const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
+const Row = ({ _id, sku, mainImage, name, quantity, user, handleShow }) => {
   const navigate = useNavigate();
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -39,7 +40,9 @@ const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
       <td>{quantity}</td>
       <td>
         <div className='flex gap-x-1 flex-row-reverse'>
-          <DeleteIcon width={25} height={25} />
+          <span onClick={() => handleShow(_id)}>
+            <DeleteIcon width={25} height={25} />
+          </span>
           <span onClick={handleEditClick}>
             <EditIcon width={25} height={25} />
           </span>
@@ -51,7 +54,7 @@ const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
 };
 
 function CustomTable(props) {
-  const { dataList = [], user } = props;
+  const { dataList = [], user, handleShow } = props;
 
   return (
     <div className='w-full overflow-x-auto overflow-y-auto h-[400px]'>
@@ -70,7 +73,12 @@ function CustomTable(props) {
           {/* rows */}
           {dataList?.length > 0 ? (
             dataList?.map((data, idx) => (
-              <Row key={data?.sku || `row_${idx}`} {...data} user={user} />
+              <Row
+                key={data?.sku || `row_${idx}`}
+                {...data}
+                user={user}
+                handleShow={handleShow}
+              />
             ))
           ) : (
             <tr>
