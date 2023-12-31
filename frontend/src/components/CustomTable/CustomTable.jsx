@@ -1,50 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import propTypes from 'prop-types';
 
-const mockData = [
-  {
-    _id: '123',
-    name: 'product 1',
-    mainImage:
-      'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
-    quantity: 1000,
-  },
-  {
-    _id: '123',
-    name: 'product 1',
-    mainImage:
-      'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
-    quantity: 1000,
-  },
-  {
-    _id: '123',
-    name: 'product 1',
-    mainImage:
-      'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
-    quantity: 1000,
-  },
-];
+import { DeleteIcon, EditIcon, SearchIcon, StarIcon } from '../icons';
+import { fetchImage } from '../../services/attachment.services';
 
-const Row = ({
-  _id,
-  sku,
-  mainImage = 'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
-  name,
-  quantity,
-}) => {
+const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
+  const [imageSrc, setImageSrc] = useState(null);
+
+  useEffect(() => {
+    const fetchImageData = async () => {
+      const { accessToken, refreshToken } = user;
+
+      const image = await fetchImage(
+        mainImage?.location,
+        accessToken,
+        refreshToken
+      );
+      setImageSrc(image);
+    };
+
+    fetchImageData();
+  }, [mainImage]);
+
   return (
     <tr>
-      <td>{`#${sku}`}</td>
+      <td className='sku-row'>{`#${sku}`}</td>
       <td>
-        <img src={mainImage} alt={name} />
+        <img src={imageSrc} alt={name} />
       </td>
       <td>{name}</td>
       <td>{quantity}</td>
-      <td></td>
+      <td>
+        <div className='flex gap-x-1 flex-row-reverse'>
+          <DeleteIcon width={25} height={25} />
+          <EditIcon width={25} height={25} />
+          <StarIcon width={25} height={25} />
+        </div>
+      </td>
     </tr>
   );
 };
 
-function CustomTable() {
+function CustomTable(props) {
+  const { dataList = [], user } = props;
+
   return (
     <div className='overflow-x-auto'>
       <table className='table custom-table'>
@@ -60,14 +59,33 @@ function CustomTable() {
         </thead>
         <tbody>
           {/* rows */}
-
-          {mockData.map((data) => (
-            <Row {...data} />
-          ))}
+          {dataList?.length > 0 ? (
+            dataList?.map((data, idx) => (
+              <Row key={data?.sku || `row_${idx}`} {...data} user={user} />
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan='5'
+                className='text-center'
+                style={{ height: '100px' }}
+              >
+                <div className='flex justify-center items-center text-2xl'>
+                  <SearchIcon width={36} height={36} color={'#162427'} />
+                  No Records Found
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
   );
 }
+
+CustomTable.propTypes = {
+  dataList: propTypes.arrayOf(propTypes.object),
+  user: propTypes.object,
+};
 
 export default CustomTable;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-function Search(props) {
+function SearchIcon(props) {
   const { color, width, height } = props;
   return (
     <svg
@@ -28,10 +28,10 @@ function Search(props) {
     </svg>
   );
 }
-Search.propTypes = {
+SearchIcon.propTypes = {
   color: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
 };
 
-export default Search;
+export default SearchIcon;

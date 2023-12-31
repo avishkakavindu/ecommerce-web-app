@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import SearchBar from '../components/SearchBar';
 import { StarFillIcon } from '../components/icons';
 import CustomTable from '../components/CustomTable/CustomTable';
+import fetchProductList from '../services/product.services';
 
 function Dashboard() {
+  const { user } = useSelector((state) => state.auth);
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    getProductList();
+  }, [user]);
+
+  /**
+   * Fetch product from api
+   */
+  const getProductList = async () => {
+    const { accessToken, refreshToken } = user;
+    const data = await fetchProductList(accessToken, refreshToken);
+    if (data && data?.length > 0) {
+      setProductList(data);
+    }
+  };
+
   return (
     <div className='dashboard '>
       <div className='title'>
@@ -23,7 +44,7 @@ function Dashboard() {
       </div>
 
       <div className='table mt-4'>
-        <CustomTable />
+        <CustomTable dataList={productList} user={user} />
       </div>
     </div>
   );
