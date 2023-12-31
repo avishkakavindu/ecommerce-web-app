@@ -43,7 +43,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className='table mt-4'>
+      <div className='flex border border-red-600 mt-4'>
         <CustomTable dataList={productList} user={user} />
       </div>
     </div>

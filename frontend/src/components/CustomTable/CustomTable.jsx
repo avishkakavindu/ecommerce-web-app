@@ -45,8 +45,8 @@ function CustomTable(props) {
   const { dataList = [], user } = props;
 
   return (
-    <div className='overflow-x-auto'>
-      <table className='table custom-table'>
+    <div className='w-full overflow-x-auto overflow-y-auto h-[400px]'>
+      <table className='table custom-table table-pin-rows table-pin-cols'>
         {/* head */}
         <thead>
           <tr>
