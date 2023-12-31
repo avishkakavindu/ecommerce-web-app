@@ -30,7 +30,32 @@ class ProductService {
    * @returns
    */
   public async getProductList(): Promise<FlattenMaps<TProductDocument[]>> {
-    const data = await ProductModel.find({}).lean();
+    const data = await ProductModel.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: 'attachments',
+          localField: 'mainImage',
+          foreignField: '_id',
+          as: 'mainImage',
+          pipeline: [
+            {
+              $project: {
+                location: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $unwind: {
+          path: '$mainImage',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ]);
     return data;
   }
 
