@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const fetchProductList = async (accessToken, refreshToken) => {
+export const fetchProductList = async (accessToken, refreshToken) => {
   try {
     const response = await axios.get('/products/list', {
       headers: {
@@ -21,4 +22,31 @@ const fetchProductList = async (accessToken, refreshToken) => {
   }
 };
 
-export default fetchProductList;
+export const fetchProductById = async (
+  productId,
+  accessToken,
+  refreshToken
+) => {
+  try {
+    const response = await axios.get(`/products/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'x-refresh': refreshToken,
+      },
+    });
+
+    // Handle the response data as needed
+    console.log('Product Data:', response.data);
+    return response?.data;
+  } catch (error) {
+    // Handle errors
+    console.error('Error:', error);
+    const { message, userMessage } = error?.response?.data?.errors[0];
+
+    if (message && message === 'VALIDATION_ERROR') {
+      toast.error('No product found');
+    } else {
+      toast.error('Something went wrong');
+    }
+  }
+};

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import propTypes from 'prop-types';
 
 import { DeleteIcon, EditIcon, SearchIcon, StarIcon } from '../icons';
 import { fetchImage } from '../../services/attachment.services';
 
 const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
+  const navigate = useNavigate();
+
   const [imageSrc, setImageSrc] = useState(null);
 
   useEffect(() => {
@@ -22,6 +25,10 @@ const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
     fetchImageData();
   }, [mainImage]);
 
+  const handleEditClick = () => {
+    navigate(`/product?md=edit&i=${_id}`);
+  };
+
   return (
     <tr>
       <td className='sku-row'>{`#${sku}`}</td>
@@ -33,7 +40,9 @@ const Row = ({ _id, sku, mainImage, name, quantity, user }) => {
       <td>
         <div className='flex gap-x-1 flex-row-reverse'>
           <DeleteIcon width={25} height={25} />
-          <EditIcon width={25} height={25} />
+          <span onClick={handleEditClick}>
+            <EditIcon width={25} height={25} />
+          </span>
           <StarIcon width={25} height={25} />
         </div>
       </td>

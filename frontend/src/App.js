@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
+import Product from './pages/Product';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Router>
         <div className='main'>
           <Header />
-          <div className='px-6 md:px-[100px]'>
+          <div className='p-6 md:px-[100px]'>
             <Routes>
               {/* public routes */}
               <Route path='/login' element={<Login />} />
@@ -23,6 +24,7 @@ function App() {
               {/* private routes */}
               <Route element={<RequireAuth />}>
                 <Route path='/' element={<Dashboard />} />
+                <Route path='/product' element={<Product />} />
               </Route>
             </Routes>
           </div>

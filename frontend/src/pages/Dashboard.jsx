@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import SearchBar from '../components/SearchBar';
 import { StarFillIcon } from '../components/icons';
 import CustomTable from '../components/CustomTable/CustomTable';
-import fetchProductList from '../services/product.services';
+import { fetchProductList } from '../services/product.services';
+import BreadCrumb from '../components/BreadCrumb';
 
 function Dashboard() {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     getProductList();
-  }, [user]);
+  }, []);
 
   /**
    * Fetch product from api
@@ -27,14 +30,16 @@ function Dashboard() {
 
   return (
     <div className='dashboard '>
-      <div className='title'>
-        <h1>Products</h1>
-      </div>
+      <BreadCrumb crumbs={['Products']} />
 
       <div className='flex header justify-between gap-x-2 border border-red-400'>
         <SearchBar />
         <div className='flex gap-x-2'>
-          <button type='button' className='btn bg-primary text-light'>
+          <button
+            type='button'
+            className='btn bg-primary text-light'
+            onClick={() => navigate('/product')}
+          >
             New Product
           </button>
           <button className='btn btn-outline btn-primary'>
@@ -43,7 +48,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className='flex border border-red-600 mt-4'>
+      <div className='flex mt-4'>
         <CustomTable dataList={productList} user={user} />
       </div>
     </div>

@@ -8,4 +8,23 @@
   @apply text-red-500 text-xs italic;
 
   word-wrap: 'break-word';
+  color: rgb(239, 68, 68) !important;
+}
+
+.title {
+  @apply font-satoshi;
+
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 49px;
+  letter-spacing: 0.15em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.sub-title {
+  @apply font-satoshi text-primary;
+
+  font-size: 24px;
+  font-weight: 700;
 }
